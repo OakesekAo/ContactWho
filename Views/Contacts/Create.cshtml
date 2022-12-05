@@ -4,17 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>EDIT CONTACT</h1>
+<h1>CREATE CONTACT</h1>
 <div class="p-3 border border-2 shadow-lg bg-light">
     <form asp-action="Create" asp-controller="Contacts" enctype="multipart/form-data">
         <div class="row g-3 p-2">
 
             <div class="col-12 col-lg-4">
                 <div class="square-img-container">
-                    <img class="square-img" src="~/img/DefaultContactImage.png">
+                    <img id="contactIamge" class="square-img" src="~/img/DefaultContactImage.png">
                 </div>
                 <div>
-                    <input asp-for="ImageFile" class="form-control" accept=".png,.jpg,.jpeg,.gif">
+                    <input asp-for="ImageFile" class="form-control" accept=".png,.jpg,.jpeg,.gif" onchange="document.getElementById('contactIamge').src= window.URL.createObjectURL(this.files[0])" />
                     <span asp-validation-for="ImageFile" class="text-danger"></span>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-12 col-lg-4 mt-2">
                         <label asp-for="State" class="control-label"></label>
-                        <select asp-for="State" class="form-control"></select>
+                        <select asp-for="State" class="form-control" asp-items="ViewBag.StatesList"></select>
                         <span asp-validation-for="State" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-2 mt-2">
@@ -66,7 +66,7 @@
                         <input asp-for="ZipCode" class="form-control" />
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
                     </div>
-                    <div class="col-12 col-lr-6 mt-3">
+                    <div class="col-12 col-lg-6 mt-3">
                         <label asp-for="Categories" class="control-label"></label>
                         <select name="CategoryList" class="form-control" asp-items="ViewBag.CategoryList" multiple></select>
                     </div>

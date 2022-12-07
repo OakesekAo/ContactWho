@@ -5,7 +5,7 @@ namespace ContactPro.Services
     public class ImageService : IImageService
     {
         private readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
-        private readonly string defaultImage = "img/DefaultContactIamge.png";
+        private readonly string defaultImage = "img/DefaultContactImage.png";
         public async Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
         {
             try
@@ -30,7 +30,7 @@ namespace ContactPro.Services
             try
             {
                 string ImageBase64Data = Convert.ToBase64String(fileData);
-                return string.Format($"data:{extension},base64,{ImageBase64Data}");
+                return string.Format($"data:{extension};base64,{ImageBase64Data}");
             }
             catch (Exception)
             {

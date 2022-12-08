@@ -24,9 +24,9 @@ namespace ContactPro.Controllers
         private readonly IAddressBookService _addressBookService;
 
 
-        public ContactsController(ApplicationDbContext context, 
-                                    UserManager<AppUser> userManager, 
-                                    IImageService imageService, 
+        public ContactsController(ApplicationDbContext context,
+                                    UserManager<AppUser> userManager,
+                                    IImageService imageService,
                                     IAddressBookService addressBookService)
         {
             _context = context;
@@ -82,7 +82,7 @@ namespace ContactPro.Controllers
                 .ThenInclude(c => c.Categories)
                 .FirstOrDefault(u => u.Id == appUserId);
 
-            if(String.IsNullOrEmpty(searchString))
+            if (String.IsNullOrEmpty(searchString))
             {
                 contacts = appUser.Contacts
                     .OrderBy(c => c.LastName)
@@ -91,7 +91,7 @@ namespace ContactPro.Controllers
             }
             else
             {
-                contacts = appUser.Contacts.Where( c => c.FullName!.ToLower().Contains(searchString.ToLower() ) )
+                contacts = appUser.Contacts.Where(c => c.FullName!.ToLower().Contains(searchString.ToLower()))
                     .OrderBy(c => c.LastName)
                     .ThenBy(c => c.FirstName)
                     .ToList();
@@ -100,7 +100,7 @@ namespace ContactPro.Controllers
 
             ViewData["CategoryId"] = new SelectList(appUser.Categories, "Id", "Name", 0);
 
-            return View(nameof(Index), contacts); 
+            return View(nameof(Index), contacts);
 
         }
         // GET: Contacts/Details/5
@@ -150,7 +150,7 @@ namespace ContactPro.Controllers
 
                 contact.AppUserId = _userManager.GetUserId(User);
                 contact.Created = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-                
+
                 if (contact.BirthDate != null)
                 {
                     contact.BirthDate = DateTime.SpecifyKind(contact.BirthDate.Value, DateTimeKind.Utc);
@@ -179,7 +179,7 @@ namespace ContactPro.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -192,12 +192,19 @@ namespace ContactPro.Controllers
                 return NotFound();
             }
 
-            var contact = await _context.Contacts.FindAsync(id);
+            string appUserId = _userManager.GetUserId(User);
+
+            //var contact = await _context.Contacts.FindAsync(id);
+            var contact = await _context.Contacts.Where(c => c.Id == id && c.AppUserId == appUserId)
+                .FirstOrDefaultAsync();
             if (contact == null)
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", contact.AppUserId);
+
+
+            ViewData["StatesList"] = new SelectList(Enum.GetValues(typeof(States)).Cast<States>().ToList());
+
             return View(contact);
         }
 
@@ -271,14 +278,14 @@ namespace ContactPro.Controllers
             {
                 _context.Contacts.Remove(contact);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ContactExists(int id)
         {
-          return _context.Contacts.Any(e => e.Id == id);
+            return _context.Contacts.Any(e => e.Id == id);
         }
     }
 }

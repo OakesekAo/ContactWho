@@ -8,6 +8,8 @@ namespace ContactPro.Models
     public class Contact
     {
         public int Id { get; set; }
+
+
         [Required]
         public string? AppUserId { get; set; }
 
@@ -23,7 +25,7 @@ namespace ContactPro.Models
 
         [NotMapped]
         public string? FullName { get { return $"{FirstName} {LastName}"; } }
-        [Display(Name ="Birthday")]
+        [Display(Name = "Birthday")]
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
 
@@ -37,7 +39,7 @@ namespace ContactPro.Models
         public States State { get; set; }
 
         [Required]
-        [Display(Name ="Zip Code")]
+        [Display(Name = "Zip Code")]
         [DataType(DataType.PostalCode)]
         public int ZipCode { get; set; }
 

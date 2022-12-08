@@ -16,7 +16,7 @@ namespace ContactPro.Services
         {
             _context = context;
         }
- 
+
 
         public async Task AddContactToCatagoryAsynce(int categoryId, int contactId)
         {
@@ -47,9 +47,23 @@ namespace ContactPro.Services
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<int>> GetContactCategoryIdsAsync(int contactId)
+        public async Task<ICollection<int>> GetContactCategoryIdsAsync(int contactId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Getlist of category IDs selected for current card  and a list of all categories to be able to do this
+                var contact = await _context.Contacts.Include(c => c.Categories)
+                    .FirstOrDefaultAsync(c => c.Id == contactId); //filter by contactID
+
+                List<int> categoryIds = contact.Categories.Select(c => c.Id).ToList();
+                return categoryIds;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         public async Task<IEnumerable<Category>> GetUserCategoriesAsync(string userId)

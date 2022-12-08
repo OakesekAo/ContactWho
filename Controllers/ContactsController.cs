@@ -103,6 +103,12 @@ namespace ContactPro.Controllers
             return View(nameof(Index), contacts);
 
         }
+
+        [Authorize]
+        public IActionResult EmailContact(int contactId)
+        {
+            return View();
+        }
         // GET: Contacts/Details/5
         [Authorize]
         public async Task<IActionResult> Details(int? id)

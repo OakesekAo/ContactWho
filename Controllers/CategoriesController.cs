@@ -11,6 +11,7 @@ using ContactPro.Data;
 using ContactPro.Models;
 using ContactPro.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ContactPro.Controllers
 {
@@ -18,18 +19,24 @@ namespace ContactPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailService;
 
         public CategoriesController(ApplicationDbContext context, 
-                                    UserManager<AppUser> userManager)
+                                    UserManager<AppUser> userManager,
+                                    IEmailSender emailService)
+
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         // GET: Categories
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string swalMessage = null)
         {
+            ViewData["SwalMessage"] = swalMessage;
+
             string appUserId = _userManager.GetUserId(User);
 
 
@@ -39,6 +46,8 @@ namespace ContactPro.Controllers
             return View(categories);
         }
 
+        
+        
         [Authorize]
         public async Task<IActionResult> EmailCategory(int id)
         {
@@ -61,6 +70,30 @@ namespace ContactPro.Controllers
                 EmailData = emailData
             };
             return View(model);
+        }
+
+
+
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EmailCategory(EmailCategoryViewModel ecvm)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _emailService.SendEmailAsync(ecvm.EmailData.EmailAddress, ecvm.EmailData.Subject, ecvm.EmailData.Body);
+                    return RedirectToAction("Index", "Categories", new { SwalMessage = "Success: Email Sent" });
+                }
+                catch
+                {
+
+                    return RedirectToAction("Index", "Categories", new { SwalMessage = "Error: Email Send Failed!" });
+                    throw;
+                }
+            }
+            return View(ecvm);
         }
 
         // GET: Categories/Details/5

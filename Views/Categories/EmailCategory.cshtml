@@ -2,7 +2,7 @@
 
 <h1 class="mt-5">Email Category: FAMILY</h1>
 <div class="p-2">
-    <form asp-action="EmailCategory" method="post">
+    <form asp-action="EmailCategory" asp-controller="Categories" method="post">
         <input type="hidden" asp-for="@Model.EmailData.GroupName" />
         <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
             <div class="col col-md-12">

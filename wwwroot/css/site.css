@@ -206,3 +206,15 @@ main {
         font-size: 3.5rem;
     }
 }
+
+.imgicon {
+    display: inline;
+    height: 3.5rem;
+    margin: 0rem .3rem;
+}
+
+figcaption {
+    color: #131313;
+    font-size: 0.8rem;
+    text-align: center;
+}

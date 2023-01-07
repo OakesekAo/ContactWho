@@ -1,8 +1,8 @@
 # ContactWho
 
-### Power up your contact list with \* _ContactWho_ \*
+### Power up your contact list with ContactWho
 
-D:\Data Files\Download\ContactWho.jpg
+[](../../Data%20Files/Download/ContactWho.jpg)
 
 This web app stores contact information in a SQL database. It uses HTML5, CSS, and some JS for the front end and ASP.Net with Razor pages and Postgres for the backend.
 

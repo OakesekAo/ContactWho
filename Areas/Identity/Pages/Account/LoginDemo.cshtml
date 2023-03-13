@@ -13,13 +13,13 @@
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating mt-2">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" value="demo@demo.com"/>
-                    <label asp-for="Input.Email" class="form-label">For Demo use demo@demo.com</label>
+                    <input id="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="Input.Email" class="form-label"></label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating mt-2">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" value="Abc123$" />
-                    <label asp-for="Input.Password" class="form-label">For Demo Password use Abc123$</label>
+                    <input id="password" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <label asp-for="Input.Password" class="form-label"></label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div>
@@ -32,6 +32,9 @@
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                </div>
+                <div>
+                    <button class="w-100 btn btn-lg btn-primary" onclick="demoLogin()">Demo log in</button>
                 </div>
                 <div>
                     <p>
@@ -51,5 +54,11 @@
 </div>
 
 @section Scripts {
+    <script>
+        demoLogin = () => {
+            let email = document.getElementById('email').value = "demo@demo.com";
+            let password = document.getElementById('password').value = "Abc123$";
+        }
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }

@@ -14,7 +14,7 @@ namespace ContactPro.Controllers
         }
 
 
-
+        //home page
         public IActionResult Index()
         {
             return View();
